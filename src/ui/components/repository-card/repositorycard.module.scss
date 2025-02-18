@@ -1,0 +1,33 @@
+.card {
+  background: white;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 16px;
+  height: 100%;
+
+  h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: #000;
+  }
+
+  .description {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .stats {
+    display: flex;
+    gap: 16px;
+    font-size: 14px;
+    color: #666;
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+}
