@@ -1,15 +1,12 @@
 import styles from "./repositorycard.module.scss";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const RepositoryCard = ({ repository }) => {
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/repo/${repository.owner.login}/${repository.name}`);
-  };
-
   return (
-    <div className={styles.card} onClick={handleClick}>
+    <Link
+      href={`/repo/${repository.owner.login}/${repository.name}`}
+      className={styles.card}
+    >
       <h3>{repository.name}</h3>
       <p className={styles.description}>
         {repository.description || "No description available"}
@@ -23,7 +20,7 @@ const RepositoryCard = ({ repository }) => {
           </span>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 

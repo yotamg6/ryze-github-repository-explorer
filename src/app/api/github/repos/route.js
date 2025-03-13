@@ -1,59 +1,26 @@
-// src/app/api/github/repos/route.js
 import { GITHUB_API_CONFIG } from "@/config/github";
-import { cacheData, getCachedData } from "@/lib/cache";
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const username = searchParams.get("username");
-  const repo = searchParams.get("repo");
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const perPage = parseInt(searchParams.get("per_page") || "3", 10);
 
   if (!username) {
     return Response.json({ error: "Username is required" }, { status: 400 });
   }
 
-  // If repo is provided, fetch specific repository details
-  if (repo) {
-    const cacheKey = `repo-${username}-${repo}`;
-    const cachedData = getCachedData(cacheKey);
-
-    if (cachedData) {
-      return Response.json(cachedData);
-    }
-
-    try {
-      const response = await fetch(
-        `${GITHUB_API_CONFIG.BASE_URL}/repos/${username}/${repo}`,
-        { headers: GITHUB_API_CONFIG.HEADERS }
-      );
-
-      if (!response.ok) {
-        const error = await response.json();
-        return Response.json(
-          { error: error.message },
-          { status: response.status }
-        );
-      }
-
-      const data = await response.json();
-      cacheData(cacheKey, data);
-      return Response.json(data);
-    } catch (error) {
-      return Response.json({ error: error.message }, { status: 500 });
-    }
-  }
-
-  // Otherwise, fetch all repositories
-  const cacheKey = `repos-${username}`;
-  const cachedData = getCachedData(cacheKey);
-
-  if (cachedData) {
-    return Response.json(cachedData);
-  }
-
   try {
     const response = await fetch(
-      `${GITHUB_API_CONFIG.BASE_URL}/users/${username}/repos`,
-      { headers: GITHUB_API_CONFIG.HEADERS }
+      `${GITHUB_API_CONFIG.BASE_URL}/users/${username}/repos?page=${page}&per_page=${perPage}`,
+      {
+        headers: {
+          ...GITHUB_API_CONFIG.HEADERS,
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+        },
+        cache: "force-cache",
+      }
     );
 
     if (!response.ok) {
@@ -65,7 +32,6 @@ export async function GET(request) {
     }
 
     const data = await response.json();
-    cacheData(cacheKey, data);
     return Response.json(data);
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });

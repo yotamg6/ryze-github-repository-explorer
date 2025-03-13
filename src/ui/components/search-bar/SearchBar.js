@@ -1,22 +1,27 @@
+"use client";
+import { useState } from "react";
 import styles from "./searchbar.module.scss";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ handleSearch }) => {
+  const [input, setInput] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const username = e.target.username.value.trim();
-    if (username) {
-      onSearch(username);
-    }
+    if (!input.trim()) return;
+    handleSearch(input.trim());
+  };
+
+  const handleChange = (e) => {
+    setInput(e.target.value);
   };
 
   return (
     <form className={styles.searchForm} onSubmit={handleSubmit}>
       <input
         type="text"
-        name="username"
-        placeholder="Enter a GitHub username to explore repositories"
-        className={styles.searchForm__input}
-        required
+        value={input}
+        onChange={handleChange}
+        placeholder="Enter GitHub username"
       />
       <button type="submit" className={styles.searchForm__button}>
         Search

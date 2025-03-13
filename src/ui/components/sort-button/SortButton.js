@@ -1,9 +1,9 @@
 import styles from "./sortbutton.module.scss";
 
-const SortButton = ({ onClick }) => {
+const SortButton = ({ handleSort, sortDirection }) => {
   return (
-    <button className={styles.SortButton} onClick={onClick}>
-      Sort by Stars (Descending)
+    <button className={styles.SortButton} onClick={handleSort}>
+      Sort by Stars ({sortDirection})
     </button>
   );
 };

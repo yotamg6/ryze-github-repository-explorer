@@ -20,10 +20,18 @@
   border-radius: 6px;
 }
 
-.loading {
+.loader {
   text-align: center;
-  color: #586069;
-  margin: 1rem 0;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Add flex-grow to push down dynamically */
+  flex-shrink: 0;
+  margin-top: 50px;
 }
 
 .resultHeader {
@@ -37,5 +45,10 @@
     color: #24292e;
     font-size: 1.5rem;
     margin: 0;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
   }
 }

@@ -1,5 +1,5 @@
 import { GITHUB_API_CONFIG } from "@/config/github";
-import { cacheData, getCachedData } from "@/lib/cache";
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -13,17 +13,16 @@ export async function GET(request) {
     );
   }
 
-  const cacheKey = `contributors-${username}-${repo}`;
-  const cachedData = getCachedData(cacheKey);
-
-  if (cachedData) {
-    return Response.json(cachedData);
-  }
-
   try {
     const response = await fetch(
       `${GITHUB_API_CONFIG.BASE_URL}/repos/${username}/${repo}/contributors`,
-      { headers: GITHUB_API_CONFIG.HEADERS }
+      {
+        headers: {
+          ...GITHUB_API_CONFIG.HEADERS,
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+        },
+        cache: "force-cache",
+      }
     );
 
     if (!response.ok) {
@@ -35,7 +34,6 @@ export async function GET(request) {
     }
 
     const data = await response.json();
-    cacheData(cacheKey, data);
 
     return Response.json(data);
   } catch (error) {
