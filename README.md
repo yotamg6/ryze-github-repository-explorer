@@ -48,6 +48,16 @@ The project requires the following dependencies which will be installed:
 
 - `sass` - For SCSS processing
 
+3. Set up the environment variables:
+
+Create a `.env` file in the root directory and add:
+
+```
+GITHUB_TOKEN=your_personal_access_token_here
+```
+
+This token is required to authenticate requests to the GitHub API and avoid hitting rate limits.
+
 ## Running the Application
 
 To run the development server:
@@ -75,23 +85,29 @@ src/
 │   │           └── page.js
 │   └── page.js
 ├── config/
-│   └── github.js
+│   ├── github.js
+│   ├── general.js
 ├── lib/
 │   └── cache.js
-└── ui/
-    └── components/
-        ├── search-bar/
-        │   ├── search-bar.js
-        │   └── search-bar.module.scss
-        ├── repository-card/
-        │   ├── repository-card.js
-        │   └── repository-card.module.scss
-        ├── repository-grid/
-        │   ├── repository-grid.js
-        │   └── repository-grid.module.scss
-        └── sort-button/
-            ├── sort-button.js
-            └── sort-button.module.scss
+├── ui/
+│   ├── components/
+│   │   ├── search-bar/
+│   │   │   ├── SearchBar.js
+│   │   │   └── search-bar.module.scss
+│   │   ├── repository-card/
+│   │   │   ├── RepositoryCard.js
+│   │   │   └── repository-card.module.scss
+│   │   ├── repository-grid/
+│   │   │   ├── RepositoryGrid.js
+│   │   │   └── repository-grid.module.scss
+│   │   ├── sort-button/
+│   │   │   ├── SortButton.js
+│   │   │   └── sort-button.module.scss
+│   │   ├── repo-page/
+│   │   │   ├── RepoDetails.js
+│   │   │   ├── ContribDetails.js
+│   │   │   └── repo-page.module.scss
+│   │   ├── RepoDataWrapper.js
 ```
 
 ## Key Features Implementation
@@ -103,7 +119,7 @@ src/
 
 ### Caching
 
-The application implements server-side caching to minimize API calls to GitHub. Cache duration is set to 5 minutes.
+The application uses Next.js caching when using `fetch()`. The cache hits and misses can be traced in the terminal.
 
 ### Routing
 
@@ -112,9 +128,9 @@ The application implements server-side caching to minimize API calls to GitHub. 
 
 ## GitHub API
 
-The application uses the GitHub REST API without authentication. Rate limits apply:
+The application uses the GitHub REST API with authentication. Rate limits apply:
 
-- 60 requests per hour for unauthenticated requests
+- 5000 requests per hour for authenticated requests
 
 ## Notes
 

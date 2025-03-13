@@ -1,4 +1,4 @@
-import RepoPage from "@/ui/components/RepoPage";
+import RepoPage from "@/ui/components/repo-page/RepoPage";
 import { use } from "react";
 
 const RepoDataWrapper = ({ repoDataPromise, contribsDataPromise }) => {
